@@ -6,12 +6,11 @@ const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
  * Generates a graduation photo by adding a gown and cap to the student's image.
  * @param base64Image The base64 encoded string of the original image.
  * @param mimeType The MIME type of the original image.
- * @param customText The custom text to be written on the image.
  * @returns A promise that resolves to the base64 encoded string of the generated image.
  */
-export async function generateGraduationPhoto(base64Image: string, mimeType: string, customText: string): Promise<string> {
+export async function generateGraduationPhoto(base64Image: string, mimeType: string): Promise<string> {
   try {
-    const textPrompt = `Edite esta foto de um estudante. Adicione uma beca de formatura preta com uma faixa azul. Adicione também um capelo (chapéu de formatura) preto na cabeça. O estilo deve ser realista, mantendo o rosto original. MUITO IMPORTANTE: Substitua o fundo original da foto por um fundo de escadaria escura e elegante, com um visual sofisticado, como o de uma universidade ou prédio formal.${customText ? ` Na parte inferior da imagem, adicione o seguinte texto LITERALMENTE, sem NENHUMA alteração: "${customText}". É CRUCIAL que o texto seja renderizado exatamente como está escrito aqui, caractere por caractere. Use uma fonte elegante e legível, em cor branca ou amarela para contrastar com o fundo.` : ''} Retorne apenas a imagem finalizada.`;
+    const textPrompt = `Edite esta foto de um estudante. Adicione uma beca de formatura preta com uma faixa azul. Adicione também um capelo (chapéu de formatura) preto na cabeça. O estilo deve ser realista, mantendo o rosto original. MUITO IMPORTANTE: Substitua o fundo original da foto por um fundo de escadaria escura e elegante, com um visual sofisticado, como o de uma universidade ou prédio formal. Não adicione nenhum texto à imagem. Retorne apenas a imagem finalizada.`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',

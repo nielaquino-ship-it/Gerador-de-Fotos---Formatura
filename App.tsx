@@ -54,6 +54,50 @@ const App: React.FC = () => {
     }
   };
 
+  const addTextToImage = (base64Image: string, text: string): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                return reject(new Error('Não foi possível obter o contexto do canvas.'));
+            }
+
+            ctx.drawImage(img, 0, 0);
+
+            const fontSize = Math.max(24, Math.round(img.width / 28));
+            ctx.font = `bold ${fontSize}px 'Helvetica', 'Arial', sans-serif`;
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            ctx.shadowBlur = 6;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+
+            const lines = text.split('\n');
+            const lineHeight = fontSize * 1.2;
+            const bottomMargin = Math.max(20, Math.round(img.height * 0.05));
+
+            for (let i = lines.length - 1; i >= 0; i--) {
+                const line = lines[i];
+                const y = canvas.height - bottomMargin - ((lines.length - 1 - i) * lineHeight);
+                ctx.fillText(line, canvas.width / 2, y);
+            }
+
+            resolve(canvas.toDataURL('image/png'));
+        };
+        img.onerror = (err) => {
+            reject(new Error('Falha ao carregar a imagem gerada.'));
+        };
+        img.src = base64Image;
+    });
+  };
+
   const handleGenerateClick = async () => {
     if (!originalImage || !file) return;
 
@@ -62,8 +106,14 @@ const App: React.FC = () => {
 
     try {
       const base64Data = originalImage.split(',')[1];
-      const resultBase64 = await generateGraduationPhoto(base64Data, file.type, customMessage);
-      setGeneratedImage(`data:image/png;base64,${resultBase64}`);
+      const resultBase64 = await generateGraduationPhoto(base64Data, file.type);
+      const imageWithGown = `data:image/png;base64,${resultBase64}`;
+
+      const finalImage = customMessage.trim()
+        ? await addTextToImage(imageWithGown, customMessage)
+        : imageWithGown;
+
+      setGeneratedImage(finalImage);
       setAppState('result');
     } catch (err) {
       console.error(err);
