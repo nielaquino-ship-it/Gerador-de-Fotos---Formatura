@@ -163,7 +163,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4 sm:p-6 font-sans">
+    <div className="min-h-screen text-white flex flex-col items-center justify-center p-4 sm:p-6 font-sans">
       <div className="w-full max-w-4xl mx-auto">
         <header className="text-center mb-8">
             <div className="inline-block bg-yellow-400 p-2 rounded-full mb-4">
