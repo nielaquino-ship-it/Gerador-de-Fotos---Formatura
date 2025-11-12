@@ -7,6 +7,7 @@ type AppState = 'initial' | 'loading' | 'result' | 'error';
 const loadingMessages = [
   'Analisando a pose e iluminação da foto...',
   'Desenhando a beca com tecido virtual...',
+  'Criando um fundo sofisticado de formatura...',
   'Ajustando a faixa azul para um caimento perfeito...',
   'Quase pronto! Dando os toques finais...',
 ];
@@ -114,7 +115,7 @@ const App: React.FC = () => {
         return (
           <div className="flex flex-col items-center justify-center text-center p-8 h-64">
             <ArrowPathIcon className="h-12 w-12 text-blue-400 animate-spin mb-4" />
-            <p className="text-lg font-semibold text-gray-300">Criando sua beca de formatura...</p>
+            <p className="text-lg font-semibold text-gray-300">Criando sua foto de formatura...</p>
             <p className="text-sm text-gray-400 mt-2 min-h-[2.5rem] flex items-center justify-center">{loadingMessage}</p>
             <p className="text-xs text-gray-500 mt-2">A mágica da IA leva um momentinho. Por favor, aguarde.</p>
           </div>
@@ -163,7 +164,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center justify-center p-4 sm:p-6 font-sans">
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4 sm:p-6 font-sans">
       <div className="w-full max-w-4xl mx-auto">
         <header className="text-center mb-8">
             <div className="inline-block bg-yellow-400 p-2 rounded-full mb-4">
