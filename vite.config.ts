@@ -5,6 +5,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
+    const apiKey = env.VITE_GEMINI_API_KEY || env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+    
     return {
       server: {
         port: 3000,
@@ -15,8 +17,8 @@ export default defineConfig(({ mode }) => {
         tailwindcss()
       ],
       define: {
-        'process.env.API_KEY': JSON.stringify(env.VITE_GEMINI_API_KEY || env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.VITE_GEMINI_API_KEY || env.GEMINI_API_KEY)
+        'process.env.API_KEY': JSON.stringify(apiKey),
+        'process.env.GEMINI_API_KEY': JSON.stringify(apiKey)
       },
       resolve: {
         alias: {

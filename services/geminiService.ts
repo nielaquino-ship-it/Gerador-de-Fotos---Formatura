@@ -1,12 +1,12 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 
-const key = process.env.GEMINI_API_KEY || process.env.API_KEY;
+const key = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || process.env.API_KEY;
 
 if (!key) {
-  console.error("ERRO: GEMINI_API_KEY não encontrada. Certifique-se de configurar a chave no arquivo .env");
+  console.warn("AVISO: Chave de API não encontrada no ambiente. Certifique-se de configurar VITE_GEMINI_API_KEY ou GEMINI_API_KEY.");
 }
 
-const ai = new GoogleGenAI({ apiKey: key || '' });
+const ai = new GoogleGenAI({ apiKey: key || 'MISSING_KEY' });
 
 /**
  * Generates a graduation photo by adding a gown and cap to the student's image.
@@ -76,6 +76,9 @@ export async function generateGraduationPhoto(base64Image: string, mimeType: str
     
     // Tenta extrair uma mensagem mais amigável do erro da API
     const errorMessage = error.message || "Erro desconhecido";
+    if (key === 'MISSING_KEY' || errorMessage.includes("API key is missing")) {
+      throw new Error("Chave de API (GEMINI_API_KEY) não encontrada. Configure-a no arquivo .env ou no servidor.");
+    }
     if (errorMessage.includes("API key not valid")) {
       throw new Error("Chave de API inválida. Verifique se copiou corretamente.");
     } else if (errorMessage.includes("Safety talk")) {
