@@ -1,6 +1,12 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
+const key = process.env.GEMINI_API_KEY || process.env.API_KEY;
+
+if (!key) {
+  console.error("ERRO: GEMINI_API_KEY não encontrada. Certifique-se de configurar a chave no arquivo .env");
+}
+
+const ai = new GoogleGenAI({ apiKey: key || '' });
 
 /**
  * Generates a graduation photo by adding a gown and cap to the student's image.
